@@ -2,14 +2,14 @@ package com.justin13888.thumbhash
 
 import kotlin.math.roundToInt
 
-// TODO: Consider if we should really have an artificial limit even though the original implementation has it
-const val MAX_SIZE = 100
-
 /**
  * ThumbHash is a very compact representation of a placeholder for an image.
  */
 class ThumbHash {
     companion object {
+        // TODO: Consider if we should really have an artificial limit even though the original implementation has it
+        const val MAX_SIZE = 100
+
         /**
          * Encodes an RGBA image to a ThumbHash. RGB should not be premultiplied by A.
          *
@@ -284,7 +284,6 @@ class ThumbHash {
     /**
      * Represents an image with width, height, and RGBA pixel data.
      */
-    @ConsistentCopyVisibility
     data class Image(
         val width: Int,
         val height: Int,

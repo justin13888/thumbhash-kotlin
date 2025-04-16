@@ -75,7 +75,7 @@ class ThumbHashTest : StringSpec({
     }
 
     "should reject images exceeding MAX_SIZE" {
-        val width = MAX_SIZE + 1
+        val width = ThumbHash.MAX_SIZE + 1
         val height = 50
         val rgba = createSolidColorImage(width, height, 0, 0, 255, 255) // Blue
 
