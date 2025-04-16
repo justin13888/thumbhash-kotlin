@@ -23,3 +23,7 @@ In particular, two well-developed use cases exist:
 2. Consistent implementation for platforms supported by Kotlin/Native (iOS, macOS, MinGW, Linux, etc.).
 
 Additionally, its API and runtime behaviours are verified to be consistent with the original thumbhash implementations for Java (most similar to Kotlin) and Rust (useful for server use).
+
+## License
+
+This project is licensed under the [Mozilla Public License 2.0](https://www.mozilla.org/en-US/MPL/2.0/).
