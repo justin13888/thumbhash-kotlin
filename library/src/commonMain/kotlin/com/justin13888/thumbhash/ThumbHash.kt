@@ -1,6 +1,7 @@
 package com.justin13888.thumbhash
 
 import com.justin13888.thumbhash.processors.ThumbHashProcessor
+import kotlinx.serialization.Serializable
 
 /**
  * ThumbHash is a very compact representation of a placeholder for an image.
@@ -28,6 +29,7 @@ class ThumbHash {
     /**
      * Represents an image with width, height, and RGBA pixel data.
      */
+    @Serializable
     data class Image(
         val width: Int,
         val height: Int,
@@ -55,6 +57,7 @@ class ThumbHash {
     /**
      * Represents RGBA color values, each ranging from 0 to 1.
      */
+    @Serializable
     data class RGBA(
         val r: Float,
         val g: Float,

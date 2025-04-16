@@ -3,11 +3,12 @@ import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
+    kotlin("plugin.allopen") version libs.versions.kotlin
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.kotestMultiplatform)
     alias(libs.plugins.kotlinxBenchmark)
-    kotlin("plugin.allopen") version libs.versions.kotlin
     alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.vanniktech.mavenPublish)
 }
 
@@ -36,6 +37,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(libs.kotlinx.benchmark.runtime)
+                implementation(libs.kotlinx.serialization.core)
             }
         }
         val commonTest by getting {
