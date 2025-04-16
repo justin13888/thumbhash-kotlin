@@ -55,7 +55,10 @@ abstract class ThumbHashProcessor {
             return forcedEngine ?: if (simdAvailable()) simdEngine else standardEngine
         }
 
-        // TODO: Document this
+        /**
+         * Force the use of SIMD engine if available.
+         * @return true if SIMD engine is available and was forced, false otherwise.
+         */
         fun forceSimd(): Boolean {
             return if (simdAvailable()) {
                 forcedEngine = simdEngine
@@ -65,7 +68,9 @@ abstract class ThumbHashProcessor {
             }
         }
 
-        // TODO: Document this
+        /**
+         * Force the use of standard engine.
+         */
         fun forceStandard() {
             forcedEngine = standardEngine
         }
