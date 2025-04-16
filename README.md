@@ -12,3 +12,14 @@ Prerequisite: Install IntelliJ IDEA or similar for Kotlin development.
 4. Run the tests using `./gradlew test`.
     - JVM compatibility test: `./gradlew jvmTest`
     - Run specific tests: `./gradlew jvmTest --tests "com.justin13888.thumbhash.ThumbHashTest"`
+
+## Use Case Validation
+
+`thumbhash-kotlin` is implemented and provides extended APIs for various use cases with built-in accelerations.
+
+In particular, two well-developed use cases exist:
+
+1. Rendering in Jetpack Compose (Android).
+2. Consistent implementation for platforms supported by Kotlin/Native (iOS, macOS, MinGW, Linux, etc.).
+
+Additionally, its API and runtime behaviours are verified to be consistent with the original thumbhash implementations for Java (most similar to Kotlin) and Rust (useful for server use).
