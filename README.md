@@ -13,6 +13,18 @@ Prerequisite: Install IntelliJ IDEA or similar for Kotlin development.
     - JVM compatibility test: `./gradlew jvmTest`
     - Run specific tests: `./gradlew jvmTest --tests "com.justin13888.thumbhash.ThumbHashTest"`
 
+## Benchmarking
+
+Benchmarks use [kotlinx-benchmark](https://github.com/Kotlin/kotlinx-benchmark). All the Gradle tasks for each target is standard.
+
+For example, run for JVM using:
+
+```bash
+./gradlew jvmBenchmark
+```
+
+[//]: # (TODO: Document all the other targets for convenience)
+
 ## Use Case Validation
 
 `thumbhash-kotlin` is implemented and provides extended APIs for various use cases with built-in accelerations.

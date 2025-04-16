@@ -5,6 +5,8 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.kotestMultiplatform)
+    alias(libs.plugins.kotlinxBenchmark)
+    kotlin("plugin.allopen") version libs.versions.kotlin
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.vanniktech.mavenPublish)
 }
@@ -33,7 +35,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                //put your multiplatform dependencies here
+                implementation(libs.kotlinx.benchmark.runtime)
             }
         }
         val commonTest by getting {
@@ -79,6 +81,35 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+}
+
+allOpen {
+    // Required to ensure benchmark classes and methods are open
+    annotation("org.openjdk.jmh.annotations.State")
+}
+
+benchmark {
+    targets {
+        register("jvm")
+        register("android")
+        register("macosX64")
+        register("macosArm64")
+        register("iosX64")
+        register("iosArm64")
+        register("iosSimulatorArm64")
+        // register("mingwX64")
+        register("linuxX64")
+        register("linuxArm64")
+    }
+    configurations {
+        named("main") {
+            warmups = 1
+            iterations = 1
+            iterationTime = 1000
+            iterationTimeUnit = "ms"
+            outputTimeUnit = "ms"
+        }
+    } // TODO: Finalize any missing changes
 }
 
 mavenPublishing {
