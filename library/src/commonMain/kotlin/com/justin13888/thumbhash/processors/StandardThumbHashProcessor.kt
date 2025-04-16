@@ -5,7 +5,7 @@ import com.justin13888.thumbhash.ThumbHash.Image
 import com.justin13888.thumbhash.ThumbHash.RGBA
 import kotlin.math.roundToInt
 
-class StandardThumbHashProcessor : ThumbHashProcessor() {
+open class StandardThumbHashProcessor : ThumbHashProcessor() {
 
     override fun rgbaToThumbHash(w: Int, h: Int, rgba: ByteArray): ByteArray {
         // Encoding an image larger than MAX_SIZExMAX_SIZE is slow with no benefit
