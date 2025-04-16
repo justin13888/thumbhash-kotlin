@@ -1,28 +1,14 @@
 package com.justin13888.thumbhash
 
-//import io.kotest.core.spec.style.StringSpec
-//import io.kotest.matchers.shouldBe
-//import io.kotest.matchers.shouldNotBe
-//import io.kotest.matchers.floats.shouldBeLessThan
-//import io.kotest.assertions.throwables.shouldThrow
-//import io.kotest.matchers.booleans.shouldBeTrue
-//import io.kotest.matchers.booleans.shouldBeFalse
-//import io.kotest.matchers.floats.shouldBeGreaterThan
-//import io.kotest.matchers.floats.shouldBeLessThanOrEqual
-//import io.kotest.matchers.floats.shouldBeGreaterThanOrEqual
-//import io.kotest.matchers.nulls.shouldNotBeNull
-//import kotlin.math.abs
-
-import io.kotest.core.spec.style.StringSpec
-import io.kotest.matchers.shouldBe
-import io.kotest.matchers.shouldNotBe
-import io.kotest.matchers.floats.shouldBeWithinPercentageOf
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.assertions.withClue
-import io.kotest.matchers.maps.shouldContainKey
-import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.booleans.shouldBeFalse
+import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.floats.plusOrMinus
+import io.kotest.matchers.floats.shouldBeWithinPercentageOf
+import io.kotest.matchers.maps.shouldContainKey
+import io.kotest.matchers.shouldBe
 
 class ThumbHashTest : StringSpec({
     "should encode and decode solid color image" {
@@ -47,12 +33,13 @@ class ThumbHashTest : StringSpec({
     }
 
     "should handle various image dimensions" {
-        val testSizes = listOf(
-            Pair(16, 16),   // Small square
-            Pair(64, 32),   // Landscape
-            Pair(32, 64),   // Portrait
-            Pair(100, 100)  // Maximum allowed size
-        )
+        val testSizes =
+            listOf(
+                Pair(16, 16), // Small square
+                Pair(64, 32), // Landscape
+                Pair(32, 64), // Portrait
+                Pair(100, 100), // Maximum allowed size
+            )
 
         for ((width, height) in testSizes) {
             val rgba = createSolidColorImage(width, height, 0, 255, 0, 255) // Green
@@ -121,12 +108,13 @@ class ThumbHashTest : StringSpec({
         val width = 64
         val height = 64
 
-        val patterns = listOf(
-            createGradientImage(width, height, horizontal = true),
-            createGradientImage(width, height, horizontal = false),
-            createCheckerboardImage(width, height, cellSize = 8),
-            createRadialGradientImage(width, height)
-        )
+        val patterns =
+            listOf(
+                createGradientImage(width, height, horizontal = true),
+                createGradientImage(width, height, horizontal = false),
+                createCheckerboardImage(width, height, cellSize = 8),
+                createRadialGradientImage(width, height),
+            )
 
         for (rgba in patterns) {
             val hash = ThumbHash.rgbaToThumbHash(width, height, rgba)

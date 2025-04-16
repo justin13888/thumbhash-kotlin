@@ -6,6 +6,7 @@ kotlin = "2.1.20"
 android-minSdk = "24"
 android-compileSdk = "34"
 kotlinxBenchmark = "0.4.13"
+ktlint = "12.1.2"
 
 [libraries]
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junitJupiter" }
@@ -21,4 +22,5 @@ androidLibrary = { id = "com.android.library", version.ref = "agp" }
 kotestMultiplatform = { id = "io.kotest.multiplatform", version.ref = "kotest" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlinxBenchmark = { id = "org.jetbrains.kotlinx.benchmark", version.ref = "kotlinxBenchmark" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
 vanniktech-mavenPublish = { id = "com.vanniktech.maven.publish", version = "0.29.0" }

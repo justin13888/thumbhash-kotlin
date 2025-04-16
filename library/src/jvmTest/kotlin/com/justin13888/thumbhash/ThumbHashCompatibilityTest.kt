@@ -1,11 +1,8 @@
 package com.justin13888.thumbhash
 
-import io.kotest.assertions.withClue
 import io.kotest.core.spec.style.StringSpec
-import io.kotest.matchers.booleans.shouldBeTrue
-import io.kotest.matchers.floats.shouldBeWithinPercentageOf
-import io.kotest.matchers.shouldBe
-import kotlin.random.Random
+
+// TODO: Make any necessary changes here
 
 /**
  * Tests that ensure the Kotlin implementation of ThumbHash matches the behavior

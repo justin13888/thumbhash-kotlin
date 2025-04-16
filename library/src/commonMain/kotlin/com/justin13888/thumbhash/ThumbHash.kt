@@ -1,7 +1,6 @@
 package com.justin13888.thumbhash
 
 import com.justin13888.thumbhash.processors.ThumbHashProcessor
-import kotlin.math.roundToInt
 
 /**
  * ThumbHash is a very compact representation of a placeholder for an image.
@@ -9,14 +8,21 @@ import kotlin.math.roundToInt
 class ThumbHash {
     companion object {
         const val MAX_SIZE = ThumbHashProcessor.MAX_SIZE
-        fun rgbaToThumbHash(w: Int, h: Int, rgba: ByteArray): ByteArray
-            = ThumbHashProcessor.getInstance().rgbaToThumbHash(w, h, rgba)
-        fun thumbHashToRGBA(hash: ByteArray): ThumbHash.Image
-            = ThumbHashProcessor.getInstance().thumbHashToRGBA(hash)
-        fun thumbHashToAverageRGBA(hash: ByteArray): ThumbHash.RGBA
-            = ThumbHashProcessor.getInstance().thumbHashToAverageRGBA(hash)
-        fun thumbHashToApproximateAspectRatio(hash: ByteArray): Float
-            = ThumbHashProcessor.getInstance().thumbHashToApproximateAspectRatio(hash)
+
+        fun rgbaToThumbHash(
+            w: Int,
+            h: Int,
+            rgba: ByteArray,
+        ): ByteArray = ThumbHashProcessor.getInstance().rgbaToThumbHash(w, h, rgba)
+
+        fun thumbHashToRGBA(hash: ByteArray): ThumbHash.Image = ThumbHashProcessor.getInstance().thumbHashToRGBA(hash)
+
+        fun thumbHashToAverageRGBA(hash: ByteArray): ThumbHash.RGBA = ThumbHashProcessor.getInstance().thumbHashToAverageRGBA(hash)
+
+        fun thumbHashToApproximateAspectRatio(hash: ByteArray): Float =
+            ThumbHashProcessor.getInstance().thumbHashToApproximateAspectRatio(
+                hash,
+            )
     }
 
     /**
@@ -25,9 +31,8 @@ class ThumbHash {
     data class Image(
         val width: Int,
         val height: Int,
-        val rgba: ByteArray
+        val rgba: ByteArray,
     ) {
-
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
             if (other !is Image) return false
@@ -54,6 +59,6 @@ class ThumbHash {
         val r: Float,
         val g: Float,
         val b: Float,
-        val a: Float
+        val a: Float,
     )
 }

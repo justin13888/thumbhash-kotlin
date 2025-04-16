@@ -2,7 +2,6 @@ package com.justin13888.thumbhash.processors
 
 import com.justin13888.thumbhash.ThumbHash.Image
 import com.justin13888.thumbhash.ThumbHash.RGBA
-import kotlin.math.roundToInt
 
 abstract class ThumbHashProcessor {
     /**
@@ -15,7 +14,11 @@ abstract class ThumbHashProcessor {
      * @return The ThumbHash as a byte array.
      * @throws IllegalArgumentException If w or h exceeds [MAX_SIZE]px, or if rgba array length does not equal w*h*4.
      */
-    abstract fun rgbaToThumbHash(w: Int, h: Int, rgba: ByteArray): ByteArray
+    abstract fun rgbaToThumbHash(
+        w: Int,
+        h: Int,
+        rgba: ByteArray,
+    ): ByteArray
 
     /**
      * Decodes a ThumbHash to an RGBA image. RGB is not be premultiplied by A.

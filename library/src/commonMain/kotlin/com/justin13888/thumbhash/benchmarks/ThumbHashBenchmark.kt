@@ -13,7 +13,6 @@ import kotlin.random.Random
 @Warmup(iterations = 2)
 @BenchmarkMode(Mode.Throughput)
 class ThumbHashBenchmark {
-
     // Test images of different sizes
     private val smallImage = generateRandomImage(16, 16)
     private val mediumImage = generateRandomImage(50, 50)
@@ -67,7 +66,10 @@ class ThumbHashBenchmark {
     /**
      * Helper function to generate a random RGBA image for testing
      */
-    private fun generateRandomImage(width: Int, height: Int): ThumbHash.Image {
+    private fun generateRandomImage(
+        width: Int,
+        height: Int,
+    ): ThumbHash.Image {
         val rgba = ByteArray(width * height * 4)
         Random.nextBytes(rgba)
         return ThumbHash.Image(width, height, rgba)

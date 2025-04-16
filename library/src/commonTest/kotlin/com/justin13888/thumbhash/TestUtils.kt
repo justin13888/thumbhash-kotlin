@@ -6,13 +6,19 @@ import kotlin.random.Random
 
 val random = Random(42) // Fixed seed for reproducibility
 
-fun ByteArray.toHexString(): String
-= "0x" + this.joinToString("") { it.toUByte().toString(16).padStart(2, '0') }
+fun ByteArray.toHexString(): String = "0x" + this.joinToString("") { it.toUByte().toString(16).padStart(2, '0') }
 
 /**
  * Creates an RGBA image with a solid color
  */
-fun createSolidColorImage(width: Int, height: Int, r: Int, g: Int, b: Int, a: Int): ByteArray {
+fun createSolidColorImage(
+    width: Int,
+    height: Int,
+    r: Int,
+    g: Int,
+    b: Int,
+    a: Int,
+): ByteArray {
     val rgba = ByteArray(width * height * 4)
     for (i in 0 until width * height) {
         val j = i * 4
@@ -30,16 +36,21 @@ fun createSolidColorImage(width: Int, height: Int, r: Int, g: Int, b: Int, a: In
  * @param height The height of the image
  * @param horizontal If true, creates a horizontal gradient; otherwise, creates a vertical gradient
  */
-fun createGradientImage(width: Int, height: Int, horizontal: Boolean = true): ByteArray {
+fun createGradientImage(
+    width: Int,
+    height: Int,
+    horizontal: Boolean = true,
+): ByteArray {
     val rgba = ByteArray(width * height * 4)
     for (y in 0 until height) {
         for (x in 0 until width) {
             val i = (y * width + x) * 4
-            val factor = if (horizontal) {
-                x.toFloat() / (width - 1)
-            } else {
-                y.toFloat() / (height - 1)
-            }
+            val factor =
+                if (horizontal) {
+                    x.toFloat() / (width - 1)
+                } else {
+                    y.toFloat() / (height - 1)
+                }
 
             rgba[i] = (factor * 255).toInt().toByte()
             rgba[i + 1] = ((1 - factor) * 255).toInt().toByte()
@@ -57,7 +68,12 @@ fun createGradientImage(width: Int, height: Int, horizontal: Boolean = true): By
  * @param cellSize The size of each cell in the checkerboard
  * @param alphaPattern If true, uses an alpha pattern instead of a solid color
  */
-fun createCheckerboardImage(width: Int, height: Int, cellSize: Int = 4, alphaPattern: Boolean = false): ByteArray {
+fun createCheckerboardImage(
+    width: Int,
+    height: Int,
+    cellSize: Int = 4,
+    alphaPattern: Boolean = false,
+): ByteArray {
     val rgba = ByteArray(width * height * 4)
     for (y in 0 until height) {
         for (x in 0 until width) {
@@ -83,7 +99,11 @@ fun createCheckerboardImage(width: Int, height: Int, cellSize: Int = 4, alphaPat
 /**
  * Helper function to create a radial gradient
  */
-fun createRadialGradientImage(width: Int, height: Int, withAlpha: Boolean = false): ByteArray {
+fun createRadialGradientImage(
+    width: Int,
+    height: Int,
+    withAlpha: Boolean = false,
+): ByteArray {
     val rgba = ByteArray(width * height * 4)
     val centerX = width / 2.0f
     val centerY = height / 2.0f
@@ -107,7 +127,11 @@ fun createRadialGradientImage(width: Int, height: Int, withAlpha: Boolean = fals
 /**
  * Creates a random image
  */
-fun createRandomImage(width: Int, height: Int, randomAlpha: Boolean): ByteArray {
+fun createRandomImage(
+    width: Int,
+    height: Int,
+    randomAlpha: Boolean,
+): ByteArray {
     val rgba = ByteArray(width * height * 4)
     random.nextBytes(rgba)
 
@@ -121,10 +145,15 @@ fun createRandomImage(width: Int, height: Int, randomAlpha: Boolean): ByteArray 
 }
 
 // TODO: Check if kotest suffices comparing bytearray vv
+
 /**
  * Compares two RGBA images with tolerance
  */
-fun compareRgbaImages(original: ByteArray, decoded: ByteArray, tolerance: Int): Boolean {
+fun compareRgbaImages(
+    original: ByteArray,
+    decoded: ByteArray,
+    tolerance: Int,
+): Boolean {
     if (original.size != decoded.size) return false
 
     for (i in original.indices) {
@@ -140,14 +169,16 @@ fun compareRgbaImages(original: ByteArray, decoded: ByteArray, tolerance: Int): 
  * @param image The image to check
  * @return True if the image has consistent dimensions, false otherwise
  */
-fun ThumbHash.Image.isConsistent(): Boolean
-    = ((this.width * this.height * 4) == this.rgba.size)
+fun ThumbHash.Image.isConsistent(): Boolean = ((this.width * this.height * 4) == this.rgba.size)
 
 /**
  * Compare two hash byte arrays and return a similarity score (0-1).
  * 1.0 means identical, 0.0 means completely different.
  */
-fun compareHashes(hash1: ByteArray, hash2: ByteArray): Float {
+fun compareHashes(
+    hash1: ByteArray,
+    hash2: ByteArray,
+): Float {
     if (hash1.size != hash2.size) return 0.0f
 
     var matches = 0
@@ -179,7 +210,8 @@ fun extractHashProperties(hash: ByteArray): Map<String, Any> {
         throw IllegalArgumentException("Hash too short to be valid")
     }
 
-    val header24 = (hash[0].toInt() and 0xFF) or
+    val header24 =
+        (hash[0].toInt() and 0xFF) or
             ((hash[1].toInt() and 0xFF) shl 8) or
             ((hash[2].toInt() and 0xFF) shl 16)
     val header16 = (hash[3].toInt() and 0xFF) or ((hash[4].toInt() and 0xFF) shl 8)
@@ -193,16 +225,17 @@ fun extractHashProperties(hash: ByteArray): Map<String, Any> {
     val qScale = ((header16 shr 9) and 63) / 63.0f
     val isLandscape = (header16 shr 15) != 0
 
-    val result = mutableMapOf<String, Any>(
-        "hasAlpha" to hasAlpha,
-        "isLandscape" to isLandscape,
-        "lDc" to lDc,
-        "pDc" to pDc,
-        "qDc" to qDc,
-        "lScale" to lScale,
-        "pScale" to pScale,
-        "qScale" to qScale
-    )
+    val result =
+        mutableMapOf<String, Any>(
+            "hasAlpha" to hasAlpha,
+            "isLandscape" to isLandscape,
+            "lDc" to lDc,
+            "pDc" to pDc,
+            "qDc" to qDc,
+            "lScale" to lScale,
+            "pScale" to pScale,
+            "qScale" to qScale,
+        )
 
     if (hasAlpha && hash.size > 5) {
         val aDc = (hash[5].toInt() and 15) / 15.0f
@@ -217,7 +250,13 @@ fun extractHashProperties(hash: ByteArray): Map<String, Any> {
 /**
  * Calculates average color in a specific region of an image
  */
-fun averageRegionColor(image: ThumbHash.Image, x: Int, y: Int, width: Int, height: Int): Triple<Float, Float, Float> {
+fun averageRegionColor(
+    image: ThumbHash.Image,
+    x: Int,
+    y: Int,
+    width: Int,
+    height: Int,
+): Triple<Float, Float, Float> {
     var totalR = 0.0f
     var totalG = 0.0f
     var totalB = 0.0f
@@ -246,7 +285,14 @@ fun averageRegionColor(image: ThumbHash.Image, x: Int, y: Int, width: Int, heigh
 /**
  * Helper function to create a flat color image
  */
-fun createFlatColorImage(width: Int, height: Int, r: Int, g: Int, b: Int, a: Int): ByteArray {
+fun createFlatColorImage(
+    width: Int,
+    height: Int,
+    r: Int,
+    g: Int,
+    b: Int,
+    a: Int,
+): ByteArray {
     val rgba = ByteArray(width * height * 4)
     for (i in 0 until width * height) {
         val j = i * 4
@@ -261,7 +307,10 @@ fun createFlatColorImage(width: Int, height: Int, r: Int, g: Int, b: Int, a: Int
 /**
  * Helper function to calculate mean squared error between two images
  */
-fun calculateMSE(img1: ByteArray, img2: ByteArray): Double {
+fun calculateMSE(
+    img1: ByteArray,
+    img2: ByteArray,
+): Double {
     if (img1.size != img2.size) {
         throw IllegalArgumentException("Images must be the same size")
     }
@@ -278,7 +327,11 @@ fun calculateMSE(img1: ByteArray, img2: ByteArray): Double {
 /**
  * Helper function to create a checkerboard pattern
  */
-fun createCheckerboard(width: Int, height: Int, cellSize: Int): ByteArray {
+fun createCheckerboard(
+    width: Int,
+    height: Int,
+    cellSize: Int,
+): ByteArray {
     val rgba = ByteArray(width * height * 4)
 
     for (y in 0 until height) {
@@ -287,15 +340,15 @@ fun createCheckerboard(width: Int, height: Int, cellSize: Int): ByteArray {
             val isWhite = ((x / cellSize) + (y / cellSize)) % 2 == 0
 
             if (isWhite) {
-                rgba[i] = -1     // R (255)
+                rgba[i] = -1 // R (255)
                 rgba[i + 1] = -1 // G (255)
                 rgba[i + 2] = -1 // B (255)
             } else {
-                rgba[i] = 0      // R (0)
-                rgba[i + 1] = 0  // G (0)
-                rgba[i + 2] = 0  // B (0)
+                rgba[i] = 0 // R (0)
+                rgba[i + 1] = 0 // G (0)
+                rgba[i + 2] = 0 // B (0)
             }
-            rgba[i + 3] = -1     // A (255)
+            rgba[i + 3] = -1 // A (255)
         }
     }
 
@@ -305,7 +358,10 @@ fun createCheckerboard(width: Int, height: Int, cellSize: Int): ByteArray {
 /**
  * Helper function to create a gradient pattern
  */
-fun createGradient(width: Int, height: Int): ByteArray {
+fun createGradient(
+    width: Int,
+    height: Int,
+): ByteArray {
     val rgba = ByteArray(width * height * 4)
 
     for (y in 0 until height) {
@@ -315,10 +371,10 @@ fun createGradient(width: Int, height: Int): ByteArray {
             val r = (x * 255 / width).toByte()
             val b = ((x + y) * 127 / (width + height)).toByte()
 
-            rgba[i] = r         // R
-            rgba[i + 1] = g     // G
-            rgba[i + 2] = b     // B
-            rgba[i + 3] = -1    // A (255)
+            rgba[i] = r // R
+            rgba[i + 1] = g // G
+            rgba[i + 2] = b // B
+            rgba[i + 3] = -1 // A (255)
         }
     }
 
@@ -328,7 +384,10 @@ fun createGradient(width: Int, height: Int): ByteArray {
 /**
  * Helper function to create a circular pattern
  */
-fun createCircularPattern(width: Int, height: Int): ByteArray {
+fun createCircularPattern(
+    width: Int,
+    height: Int,
+): ByteArray {
     val rgba = ByteArray(width * height * 4)
     val centerX = width / 2.0
     val centerY = height / 2.0
@@ -349,10 +408,10 @@ fun createCircularPattern(width: Int, height: Int): ByteArray {
             val g = (normalizedAngle * 255).toInt().toByte()
             val b = ((1.0 - normalizedDistance) * 255).toInt().toByte()
 
-            rgba[i] = r         // R
-            rgba[i + 1] = g     // G
-            rgba[i + 2] = b     // B
-            rgba[i + 3] = -1    // A (255)
+            rgba[i] = r // R
+            rgba[i + 1] = g // G
+            rgba[i + 2] = b // B
+            rgba[i + 3] = -1 // A (255)
         }
     }
 
@@ -362,7 +421,10 @@ fun createCircularPattern(width: Int, height: Int): ByteArray {
 /**
  * Helper function to create a pattern with transparency
  */
-fun createTransparencyPattern(width: Int, height: Int): ByteArray {
+fun createTransparencyPattern(
+    width: Int,
+    height: Int,
+): ByteArray {
     val rgba = ByteArray(width * height * 4)
 
     for (y in 0 until height) {
@@ -371,8 +433,8 @@ fun createTransparencyPattern(width: Int, height: Int): ByteArray {
             val normalizedX = x.toFloat() / width
             val normalizedY = y.toFloat() / height
 
-            rgba[i] = (normalizedX * 255).toInt().toByte()         // R
-            rgba[i + 1] = (normalizedY * 255).toInt().toByte()     // G
+            rgba[i] = (normalizedX * 255).toInt().toByte() // R
+            rgba[i + 1] = (normalizedY * 255).toInt().toByte() // G
             rgba[i + 2] = ((1 - normalizedX) * 255).toInt().toByte() // B
 
             // Create a circular transparency pattern

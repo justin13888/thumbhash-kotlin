@@ -12,6 +12,14 @@ Prerequisite: Install IntelliJ IDEA or similar for Kotlin development.
 4. Run the tests using `./gradlew test`.
     - JVM compatibility test: `./gradlew jvmTest`
     - Run specific tests: `./gradlew jvmTest --tests "com.justin13888.thumbhash.ThumbHashTest"`
+5. Lint with Ktlint:
+
+   ```bash
+   # Check
+   ./gradlew ktlintCheck
+   # Fix
+   ./gradlew ktlintFormat
+   ```
 
 ## Benchmarking
 

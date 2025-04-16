@@ -6,10 +6,13 @@ import com.justin13888.thumbhash.ThumbHash.RGBA
 import kotlin.math.roundToInt
 
 open class StandardThumbHashProcessor : ThumbHashProcessor() {
-
-    override fun rgbaToThumbHash(w: Int, h: Int, rgba: ByteArray): ByteArray {
+    override fun rgbaToThumbHash(
+        w: Int,
+        h: Int,
+        rgba: ByteArray,
+    ): ByteArray {
         // Encoding an image larger than MAX_SIZExMAX_SIZE is slow with no benefit
-        require(!(w > MAX_SIZE || h > MAX_SIZE)) { "${w}x${h} doesn't fit in ${MAX_SIZE}x${MAX_SIZE}" }
+        require(!(w > MAX_SIZE || h > MAX_SIZE)) { "${w}x$h doesn't fit in ${MAX_SIZE}x${MAX_SIZE}" }
 
         // Validate that the rgba array has the expected length
         require(rgba.size == w * h * 4) { "RGBA array must have w*h*4 elements (expected ${w * h * 4}, got ${rgba.size})" }
@@ -66,17 +69,20 @@ open class StandardThumbHashProcessor : ThumbHashProcessor() {
 
         // Write the constants
         val isLandscape = w > h
-        val header24 = (63.0f * lChannel.dc).roundToInt() or
+        val header24 =
+            (63.0f * lChannel.dc).roundToInt() or
                 ((31.5f + 31.5f * pChannel.dc).roundToInt() shl 6) or
                 ((31.5f + 31.5f * qChannel.dc).roundToInt() shl 12) or
                 ((31.0f * lChannel.scale).roundToInt() shl 18) or
                 (if (hasAlpha) 1 shl 23 else 0)
-        val header16 = (if (isLandscape) ly else lx) or
+        val header16 =
+            (if (isLandscape) ly else lx) or
                 ((63.0f * pChannel.scale).roundToInt() shl 3) or
                 ((63.0f * qChannel.scale).roundToInt() shl 9) or
                 (if (isLandscape) 1 shl 15 else 0)
         val acStart = if (hasAlpha) 6 else 5
-        val acCount = lChannel.ac.size + pChannel.ac.size + qChannel.ac.size +
+        val acCount =
+            lChannel.ac.size + pChannel.ac.size + qChannel.ac.size +
                 (if (hasAlpha) aChannel!!.ac.size else 0)
         val hash = ByteArray(acStart + (acCount + 1) / 2)
         hash[0] = header24.toByte()
@@ -86,8 +92,11 @@ open class StandardThumbHashProcessor : ThumbHashProcessor() {
         hash[4] = (header16 shr 8).toByte()
 
         if (hasAlpha) {
-            hash[5] = ((15.0f * aChannel!!.dc).roundToInt() or
-                    ((15.0f * aChannel.scale).roundToInt() shl 4)).toByte()
+            hash[5] =
+                (
+                    (15.0f * aChannel!!.dc).roundToInt() or
+                        ((15.0f * aChannel.scale).roundToInt() shl 4)
+                ).toByte()
         }
 
         // Write the varying factors
@@ -102,7 +111,8 @@ open class StandardThumbHashProcessor : ThumbHashProcessor() {
 
     override fun thumbHashToRGBA(hash: ByteArray): Image {
         // Read the constants
-        val header24 = (hash[0].toInt() and 255) or
+        val header24 =
+            (hash[0].toInt() and 255) or
                 ((hash[1].toInt() and 255) shl 8) or
                 ((hash[2].toInt() and 255) shl 16)
         val header16 = (hash[3].toInt() and 255) or ((hash[4].toInt() and 255) shl 8)
@@ -220,7 +230,8 @@ open class StandardThumbHashProcessor : ThumbHashProcessor() {
     }
 
     override fun thumbHashToAverageRGBA(hash: ByteArray): RGBA {
-        val header = (hash[0].toInt() and 255) or
+        val header =
+            (hash[0].toInt() and 255) or
                 ((hash[1].toInt() and 255) shl 8) or
                 ((hash[2].toInt() and 255) shl 16)
         val l = (header and 63) / 63.0f
@@ -236,7 +247,7 @@ open class StandardThumbHashProcessor : ThumbHashProcessor() {
             maxOf(0f, minOf(1f, r)),
             maxOf(0f, minOf(1f, g)),
             maxOf(0f, minOf(1f, b)),
-            a
+            a,
         )
     }
 
@@ -254,7 +265,7 @@ open class StandardThumbHashProcessor : ThumbHashProcessor() {
      */
     private class Channel(
         val nx: Int,
-        val ny: Int
+        val ny: Int,
     ) {
         var dc: Float = 0f
         val ac: FloatArray
@@ -270,7 +281,11 @@ open class StandardThumbHashProcessor : ThumbHashProcessor() {
             ac = FloatArray(n)
         }
 
-        fun encode(w: Int, h: Int, channel: FloatArray): Channel {
+        fun encode(
+            w: Int,
+            h: Int,
+            channel: FloatArray,
+        ): Channel {
             var n = 0
             val fx = FloatArray(w)
 
@@ -315,7 +330,12 @@ open class StandardThumbHashProcessor : ThumbHashProcessor() {
             return this
         }
 
-        fun decode(hash: ByteArray, start: Int, index: Int, scale: Float): Int {
+        fun decode(
+            hash: ByteArray,
+            start: Int,
+            index: Int,
+            scale: Float,
+        ): Int {
             var idx = index
             for (i in ac.indices) {
                 val data = hash[start + (idx shr 1)].toInt() shr ((idx and 1) shl 2)
@@ -325,7 +345,11 @@ open class StandardThumbHashProcessor : ThumbHashProcessor() {
             return idx
         }
 
-        fun writeTo(hash: ByteArray, start: Int, index: Int): Int {
+        fun writeTo(
+            hash: ByteArray,
+            start: Int,
+            index: Int,
+        ): Int {
             var idx = index
             for (v in ac) {
                 val byteIndex = start + (idx shr 1)
