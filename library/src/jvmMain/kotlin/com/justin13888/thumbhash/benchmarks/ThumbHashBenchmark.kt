@@ -1,4 +1,4 @@
-package com.justin13888.thumbhash.benchmark
+package com.justin13888.thumbhash.benchmarks
 
 import com.justin13888.thumbhash.ThumbHash
 import kotlinx.benchmark.Benchmark
@@ -20,48 +20,48 @@ class ThumbHashBenchmark {
     private val largeImage = generateRandomImage(100, 100)
 
     // Pre-encoded ThumbHashes for decoding benchmarks
-    private val smallHash = ThumbHash.rgbaToThumbHash(smallImage.width, smallImage.height, smallImage.rgba)
-    private val mediumHash = ThumbHash.rgbaToThumbHash(mediumImage.width, mediumImage.height, mediumImage.rgba)
-    private val largeHash = ThumbHash.rgbaToThumbHash(largeImage.width, largeImage.height, largeImage.rgba)
+    private val smallHash = ThumbHash.Companion.rgbaToThumbHash(smallImage.width, smallImage.height, smallImage.rgba)
+    private val mediumHash = ThumbHash.Companion.rgbaToThumbHash(mediumImage.width, mediumImage.height, mediumImage.rgba)
+    private val largeHash = ThumbHash.Companion.rgbaToThumbHash(largeImage.width, largeImage.height, largeImage.rgba)
 
     @Benchmark
     fun encodeSmallImage() {
-        ThumbHash.rgbaToThumbHash(smallImage.width, smallImage.height, smallImage.rgba)
+        ThumbHash.Companion.rgbaToThumbHash(smallImage.width, smallImage.height, smallImage.rgba)
     }
 
     @Benchmark
     fun encodeMediumImage() {
-        ThumbHash.rgbaToThumbHash(mediumImage.width, mediumImage.height, mediumImage.rgba)
+        ThumbHash.Companion.rgbaToThumbHash(mediumImage.width, mediumImage.height, mediumImage.rgba)
     }
 
     @Benchmark
     fun encodeLargeImage() {
-        ThumbHash.rgbaToThumbHash(largeImage.width, largeImage.height, largeImage.rgba)
+        ThumbHash.Companion.rgbaToThumbHash(largeImage.width, largeImage.height, largeImage.rgba)
     }
 
     @Benchmark
     fun decodeSmallHash() {
-        ThumbHash.thumbHashToRGBA(smallHash)
+        ThumbHash.Companion.thumbHashToRGBA(smallHash)
     }
 
     @Benchmark
     fun decodeMediumHash() {
-        ThumbHash.thumbHashToRGBA(mediumHash)
+        ThumbHash.Companion.thumbHashToRGBA(mediumHash)
     }
 
     @Benchmark
     fun decodeLargeHash() {
-        ThumbHash.thumbHashToRGBA(largeHash)
+        ThumbHash.Companion.thumbHashToRGBA(largeHash)
     }
 
     @Benchmark
     fun extractAverageColor() {
-        ThumbHash.thumbHashToAverageRGBA(mediumHash)
+        ThumbHash.Companion.thumbHashToAverageRGBA(mediumHash)
     }
 
     @Benchmark
     fun extractAspectRatio() {
-        ThumbHash.thumbHashToApproximateAspectRatio(mediumHash)
+        ThumbHash.Companion.thumbHashToApproximateAspectRatio(mediumHash)
     }
 
     /**
