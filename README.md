@@ -1,5 +1,7 @@
 # Thumbhash for Kotlin
 
+> Warning: This implementation was a direct port intended for a single implementation for all platforms but there are no guarantees for production use and I have abandoned it in favour of my own image placeholder format ([chromahash](https://github.com/justin13888/chromahash))
+
 This is a Kotlin implementation of [Thumbhash](https://github.com/evanw/thumbhash), a compact representation of a placeholder for images. `thumb-hash` kotlin is a multiplatform library aimed to have accelerated decoding and encoding for various mobile and desktop platforms.
 
 ## Development
